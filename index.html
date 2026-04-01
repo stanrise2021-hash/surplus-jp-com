@@ -32,12 +32,12 @@
     /* NAV */
     nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 52px; height: 68px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
     nav.scrolled { box-shadow: var(--shadow-md); }
-    .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo-icon { display: flex; flex-direction: column; gap: 3px; }
-    .nav-logo-icon span { display: block; height: 3px; background: var(--accent2); border-radius: 1px; }
-    .nav-logo-icon span:nth-child(1) { width: 18px; }
-    .nav-logo-icon span:nth-child(2) { width: 22px; }
-    .nav-logo-icon span:nth-child(3) { width: 18px; }
+    .nav-logo-icon span { display: block; height: 3.5px; width: 20px; background: var(--accent2); border-radius: 1px; }
+    .nav-logo-icon span:nth-child(1) { margin-left: 6px; }
+    .nav-logo-icon span:nth-child(2) { margin-left: 3px; }
+    .nav-logo-icon span:nth-child(3) { margin-left: 0; }
     .nav-logo-divider { width: 1px; height: 28px; background: var(--border); }
     .nav-logo-text { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.15em; color: var(--accent2); }
     .nav-logo-sub { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.25em; color: var(--gold); margin-top: -2px; }
@@ -102,10 +102,13 @@
     .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 64px; }
     .brand-card { border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
     .brand-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
-    .brand-header { padding: 40px 36px 32px; position: relative; overflow: hidden; }
+    .brand-header { padding: 40px 36px 32px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-height: 160px; }
+    .brand-logo { max-height: 60px; max-width: 160px; object-fit: contain; position: relative; z-index: 1; }
     .brand-card:nth-child(1) .brand-header { background: linear-gradient(135deg, #1a3040, #2e7d9b); }
     .brand-card:nth-child(2) .brand-header { background: linear-gradient(135deg, #1e2d40, #3d6e8a); }
-    .brand-card:nth-child(3) .brand-header { background: linear-gradient(135deg, #2a1e1e, #6b4535); }
+    .brand-card:nth-child(3) .brand-header { background: linear-gradient(135deg, #f9f3ef, #f0e6df); }
+    .brand-card:nth-child(3) .brand-name { color: #8b5e3c; }
+    .brand-card:nth-child(3) .brand-reg { color: rgba(139,94,60,0.5); }
     .brand-header::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.05); }
     .brand-name { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.2em; color: var(--white); margin-bottom: 8px; position: relative; z-index: 1; }
     .brand-reg { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; position: relative; z-index: 1; }
@@ -294,6 +297,7 @@
     <div class="brands-grid">
       <div class="brand-card fade-up">
         <div class="brand-header"><div class="brand-name">STANRISE®</div><div class="brand-reg">登録商標</div></div>
+
         <div class="brand-body">
           <p class="brand-tagline">スタンダードを、もう一段上へ。</p>
           <p class="brand-desc">自動車向けパーツを中心に展開。日常のメンテナンスやカスタムに役立つ実用的なアイテムを提供します。品質とコストのバランスを重視し、車好きのユーザーが"使いやすい"プロダクトを目指しています。</p>
@@ -301,7 +305,7 @@
         </div>
       </div>
       <div class="brand-card fade-up">
-        <div class="brand-header"><div class="brand-name">TSUKAERU LABO®</div><div class="brand-reg">登録商標</div></div>
+        <div class="brand-header"><img src="images/tsukaeru-labo.png" alt="TSUKAERU LABO" class="brand-logo" style="border-radius:50%;"><div class="brand-name">TSUKAERU LABO®</div><div class="brand-reg">登録商標</div></div>
         <div class="brand-body">
           <p class="brand-tagline">使える＋楽しいを研究するラボ。</p>
           <p class="brand-desc">工具・ギフト用品・デリバリーバッグなど、日常で役立つアイテムを幅広く展開。実用性だけでなく、"使う楽しさ"を感じられる機能性アイテムを研究・開発しています。</p>
@@ -309,7 +313,7 @@
         </div>
       </div>
       <div class="brand-card fade-up">
-        <div class="brand-header"><div class="brand-name">mic.an®</div><div class="brand-reg">登録商標</div></div>
+        <div class="brand-header"><img src="images/mican.jpg" alt="mic.an" class="brand-logo"><div class="brand-name">mic.an®</div><div class="brand-reg">登録商標</div></div>
         <div class="brand-body">
           <p class="brand-tagline">愛と安心を届ける、小さな洋服。</p>
           <p class="brand-desc">海外工場で生産したベビー服を中心に展開。国内で丁寧にラッピングし、贈り物としての品質を高めています。家族の笑顔を思い浮かべながら、安心して贈れるアイテムづくりを大切にしています。</p>
