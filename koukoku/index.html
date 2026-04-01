@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>電子公告 | 株式会社SURPLUS</title>
+  <style>
+    :root {
+      --ink: #1a1a1a;
+      --muted: #6b6b6b;
+      --rule: #d8d8d8;
+      --bg: #fafaf8;
+      --accent: #1a1a1a;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', Georgia, serif;
+      background: var(--bg);
+      color: var(--ink);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      border-bottom: 1px solid var(--rule);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    header a {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      color: var(--ink);
+      text-decoration: none;
+    }
+
+    header span {
+      font-size: 12px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    main {
+      flex: 1;
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 48px 120px;
+      width: 100%;
+    }
+
+    .label {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 400;
+      letter-spacing: 0.12em;
+      line-height: 1.5;
+      margin-bottom: 48px;
+      border-bottom: 1px solid var(--rule);
+      padding-bottom: 32px;
+    }
+
+    .notice-box {
+      background: #fff;
+      border: 1px solid var(--rule);
+      padding: 48px;
+      margin-bottom: 48px;
+    }
+
+    .notice-box p {
+      font-size: 15px;
+      line-height: 2.2;
+      color: var(--ink);
+      letter-spacing: 0.06em;
+    }
+
+    .notice-box .status {
+      display: inline-block;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.18em;
+      color: var(--muted);
+      border: 1px solid var(--rule);
+      padding: 4px 12px;
+      margin-bottom: 24px;
+    }
+
+    .meta-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      letter-spacing: 0.04em;
+    }
+
+    .meta-table tr {
+      border-bottom: 1px solid var(--rule);
+    }
+
+    .meta-table td {
+      padding: 16px 0;
+      vertical-align: top;
+      line-height: 1.8;
+    }
+
+    .meta-table td:first-child {
+      color: var(--muted);
+      width: 140px;
+      font-size: 12px;
+      letter-spacing: 0.08em;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+      margin-top: 56px;
+    }
+
+    footer {
+      border-top: 1px solid var(--rule);
+      padding: 24px 48px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    footer p {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+    }
+
+    footer a {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      text-decoration: none;
+      letter-spacing: 0.08em;
+    }
+
+    @media (max-width: 600px) {
+      header, footer { padding: 20px 24px; }
+      main { padding: 48px 24px 80px; }
+      .notice-box { padding: 32px 24px; }
+      h1 { font-size: 22px; }
+      header span { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <a href="/">SURPLUS Inc.</a>
+    <span>電子公告ページ</span>
+  </header>
+
+  <main>
+    <p class="label">Legal Notice</p>
+    <h1>電子公告</h1>
+
+    <div class="notice-box">
+      <span class="status">NO CURRENT NOTICES</span>
+      <p>
+        現在、公告すべき事項はございません。<br>
+        今後、公告事項が生じた場合は、このページに掲載いたします。
+      </p>
+    </div>
+
+    <p class="section-title">会社情報</p>
+    <table class="meta-table">
+      <tr>
+        <td>会社名</td>
+        <td>株式会社SURPLUS（SURPLUS Inc.）</td>
+      </tr>
+      <tr>
+        <td>所在地</td>
+        <td>〒870-0108　大分県大分市三佐3丁目1番3号　鶴崎司法会館101号室</td>
+      </tr>
+      <tr>
+        <td>公告方法</td>
+        <td>電子公告（会社法第939条第1項第3号）</td>
+      </tr>
+      <tr>
+        <td>公告URL</td>
+        <td>https://surplus-jp.com/koukoku/</td>
+      </tr>
+      <tr>
+        <td>代替公告</td>
+        <td>電子公告ができない場合は官報に掲載します</td>
+      </tr>
+    </table>
+  </main>
+
+  <footer>
+    <p>© 2026 SURPLUS Inc. All rights reserved.</p>
+    <a href="/">← サイトトップへ</a>
+  </footer>
+
+</body>
+</html>
