@@ -373,15 +373,17 @@
           <div class="contact-type">その他</div>
         </div>
       </div>
-      <form class="contact-form fade-up" onsubmit="handleSubmit(event)">
-        <div class="form-group"><label class="form-label">お名前 *</label><input type="text" class="form-input" required placeholder="田中 太郎"></div>
-        <div class="form-group"><label class="form-label">会社名・団体名</label><input type="text" class="form-input" placeholder="株式会社〇〇"></div>
-        <div class="form-group"><label class="form-label">メールアドレス *</label><input type="email" class="form-input" required placeholder="email@example.com"></div>
+      <form class="contact-form fade-up" action="https://formspree.io/f/mqeglenr" method="POST">
+        <div class="form-group"><label class="form-label">お名前 *</label><input type="text" name="name" class="form-input" required placeholder="田中 太郎"></div>
+        <div class="form-group"><label class="form-label">会社名・団体名</label><input type="text" name="company" class="form-input" placeholder="株式会社〇〇"></div>
+        <div class="form-group"><label class="form-label">メールアドレス *</label><input type="email" name="email" class="form-input" required placeholder="email@example.com"></div>
         <div class="form-group">
           <label class="form-label">お問い合わせ種別 *</label>
-          <select class="form-select" required><option value="">選択してください</option><option>取引相談</option><option>OEM相談</option><option>取材</option><option>その他</option></select>
+          <select name="category" class="form-select" required><option value="">選択してください</option><option>取引相談</option><option>OEM相談</option><option>取材</option><option>その他</option></select>
         </div>
-        <div class="form-group"><label class="form-label">お問い合わせ内容 *</label><textarea class="form-textarea" required placeholder="お問い合わせ内容をご記入ください"></textarea></div>
+        <div class="form-group"><label class="form-label">お問い合わせ内容 *</label><textarea name="message" class="form-textarea" required placeholder="お問い合わせ内容をご記入ください"></textarea></div>
+        <input type="hidden" name="_subject" value="surplus-jp.com からのお問い合わせ">
+        <input type="hidden" name="_next" value="https://surplus-jp.com/">
         <button type="submit" class="form-submit">送信する</button>
       </form>
     </div>
@@ -410,7 +412,6 @@
       });
     }, { threshold: 0.08 });
     document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
-    function handleSubmit(e) { e.preventDefault(); alert('お問い合わせありがとうございます。\n後ほどご連絡いたします。'); e.target.reset(); }
   </script>
 </body>
 </html>
