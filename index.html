@@ -5,8 +5,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SURPLUS Inc. | 大分発のEC・OEM企業 ─ 余裕をつくり、世界にプラスを。</title>
   <meta name="description" content="株式会社SURPLUSは、Amazon・楽天市場・Shopeeなど国内外のECプラットフォームで3ブランドを展開する大分発のEC・OEM企業です。">
+  <meta property="og:title" content="SURPLUS Inc. | 余裕をつくり、世界にプラスを。">
+  <meta property="og:description" content="大分発のEC・OEM企業。Amazon・楽天市場・Yahoo!ショッピング・Shopeeで3ブランドを展開中。">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://surplus-jp.com/">
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://images.unsplash.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Noto+Sans+JP:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <!--
+    NOTE: 写真は Unsplash CDN(無料ライセンス)を直接参照しています。
+    自社の実商品・倉庫写真が用意できたら images/ に置いて差し替えてください。
+    読み込み失敗時は各要素のグラデーション背景が自動的に表示されます。
+  -->
   <style>
     :root {
       --white: #ffffff;
@@ -15,130 +25,230 @@
       --mid-gray: #a8b0b8;
       --text-muted: #6b7580;
       --text: #1a1d21;
+      --ink: #0a1f2e;
+      --ink2: #0f2a3a;
       --accent: #2e7d9b;
       --accent2: #4a8fa8;
       --accent3: #6ab4cc;
       --accent-light: #e2f0f5;
       --gold: #a08858;
+      --gold-light: #c8a96e;
       --border: #dde2e6;
       --shadow-sm: 0 2px 8px rgba(0,0,0,0.06);
       --shadow-md: 0 8px 32px rgba(0,0,0,0.10);
       --shadow-lg: 0 24px 64px rgba(0,0,0,0.13);
+      --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
     }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body { font-family: 'Noto Sans JP', sans-serif; font-weight: 300; color: var(--text); background: var(--white); overflow-x: hidden; }
+    img { max-width: 100%; }
+    ::selection { background: var(--accent); color: var(--white); }
 
-    /* NAV */
-    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 52px; height: 68px; background: rgba(255,255,255,0.95); backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); transition: box-shadow 0.3s; }
-    nav.scrolled { box-shadow: var(--shadow-md); }
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 10px; }
+    ::-webkit-scrollbar-track { background: var(--off-white); }
+    ::-webkit-scrollbar-thumb { background: linear-gradient(var(--accent2), var(--ink2)); border-radius: 5px; }
+
+    /* ============ LOADER ============ */
+    #loader { position: fixed; inset: 0; z-index: 1000; background: var(--ink); display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 18px; transition: opacity 0.6s ease, visibility 0.6s; }
+    #loader.done { opacity: 0; visibility: hidden; }
+    .loader-word { font-family: 'DM Mono', monospace; font-size: 22px; letter-spacing: 0.5em; color: var(--white); display: flex; }
+    .loader-word span { opacity: 0; animation: loaderChar 0.5s ease forwards; }
+    .loader-word span:nth-child(1) { animation-delay: 0.05s; }
+    .loader-word span:nth-child(2) { animation-delay: 0.1s; }
+    .loader-word span:nth-child(3) { animation-delay: 0.15s; }
+    .loader-word span:nth-child(4) { animation-delay: 0.2s; }
+    .loader-word span:nth-child(5) { animation-delay: 0.25s; }
+    .loader-word span:nth-child(6) { animation-delay: 0.3s; }
+    .loader-word span:nth-child(7) { animation-delay: 0.35s; }
+    @keyframes loaderChar { from { opacity: 0; transform: translateY(14px); } to { opacity: 1; transform: translateY(0); } }
+    .loader-bar { width: 120px; height: 1px; background: rgba(255,255,255,0.15); overflow: hidden; }
+    .loader-bar::after { content: ''; display: block; height: 100%; width: 100%; background: linear-gradient(90deg, var(--accent3), var(--gold-light)); transform: scaleX(0); transform-origin: left; animation: loaderBar 1s var(--ease-out) 0.3s forwards; }
+    @keyframes loaderBar { to { transform: scaleX(1); } }
+
+    /* ============ NAV ============ */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 200; display: flex; align-items: center; justify-content: space-between; padding: 0 52px; height: 72px; background: transparent; border-bottom: 1px solid transparent; transition: background 0.4s, box-shadow 0.4s, border-color 0.4s, height 0.4s; }
+    nav.scrolled { background: rgba(255,255,255,0.92); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-bottom: 1px solid var(--border); box-shadow: var(--shadow-sm); height: 64px; }
     .nav-logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
     .nav-logo-icon { display: flex; flex-direction: column; gap: 3px; }
-    .nav-logo-icon span { display: block; height: 3.5px; width: 20px; background: var(--accent2); border-radius: 1px; }
+    .nav-logo-icon span { display: block; height: 3.5px; width: 20px; background: var(--accent3); border-radius: 1px; transition: background 0.4s; }
     .nav-logo-icon span:nth-child(1) { margin-left: 6px; }
     .nav-logo-icon span:nth-child(2) { margin-left: 3px; }
     .nav-logo-icon span:nth-child(3) { margin-left: 0; }
-    .nav-logo-divider { width: 1px; height: 28px; background: var(--border); }
-    .nav-logo-text { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.15em; color: var(--accent2); }
-    .nav-logo-sub { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.25em; color: var(--gold); margin-top: -2px; }
+    nav.scrolled .nav-logo-icon span { background: var(--accent2); }
+    .nav-logo-divider { width: 1px; height: 28px; background: rgba(255,255,255,0.25); transition: background 0.4s; }
+    nav.scrolled .nav-logo-divider { background: var(--border); }
+    .nav-logo-text { font-family: 'DM Mono', monospace; font-size: 16px; font-weight: 500; letter-spacing: 0.15em; color: var(--white); transition: color 0.4s; }
+    nav.scrolled .nav-logo-text { color: var(--accent2); }
+    .nav-logo-sub { font-family: 'DM Mono', monospace; font-size: 9px; font-weight: 500; letter-spacing: 0.25em; color: var(--gold-light); margin-top: -2px; }
     .nav-links { display: flex; gap: 36px; list-style: none; }
-    .nav-links a { font-size: 11px; font-weight: 400; letter-spacing: 0.16em; color: var(--text-muted); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-contact { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 9px 22px; text-decoration: none; text-transform: uppercase; transition: opacity 0.2s, transform 0.2s; box-shadow: 0 2px 12px rgba(46,125,155,0.25); }
-    .nav-contact:hover { opacity: 0.88; transform: translateY(-1px); }
+    .nav-links a { position: relative; font-size: 11px; font-weight: 400; letter-spacing: 0.16em; color: rgba(255,255,255,0.75); text-decoration: none; text-transform: uppercase; transition: color 0.3s; padding: 4px 0; }
+    nav.scrolled .nav-links a { color: var(--text-muted); }
+    .nav-links a::after { content: ''; position: absolute; left: 0; bottom: 0; width: 100%; height: 1px; background: currentColor; transform: scaleX(0); transform-origin: right; transition: transform 0.35s var(--ease-out); }
+    .nav-links a:hover { color: var(--accent3); }
+    nav.scrolled .nav-links a:hover { color: var(--accent); }
+    .nav-links a:hover::after { transform: scaleX(1); transform-origin: left; }
+    .nav-contact { font-size: 11px; font-weight: 500; letter-spacing: 0.14em; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 10px 24px; text-decoration: none; text-transform: uppercase; transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 12px rgba(46,125,155,0.35); }
+    .nav-contact:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(46,125,155,0.4); }
+    .nav-right { display: flex; align-items: center; gap: 24px; }
 
-    /* HERO */
-    #home { min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; padding-top: 68px; }
-    .hero-left { display: flex; flex-direction: column; justify-content: center; padding: 80px 64px 80px 80px; background: var(--white); position: relative; }
-    .hero-left::after { content: ''; position: absolute; top: 10%; right: -60px; width: 120px; height: 120px; border-radius: 50%; background: radial-gradient(circle, rgba(106,180,204,0.15), transparent 70%); pointer-events: none; }
-    .hero-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.28em; color: var(--accent2); text-transform: uppercase; margin-bottom: 32px; display: flex; align-items: center; gap: 12px; }
-    .hero-tag::before { content: ''; display: block; width: 36px; height: 1px; background: linear-gradient(90deg, var(--accent2), transparent); }
-    .hero-h1 { font-family: 'DM Serif Display', serif; font-size: clamp(36px, 4.2vw, 58px); font-weight: 400; line-height: 1.25; letter-spacing: -0.01em; color: var(--text); margin-bottom: 14px; }
-    .hero-h1 em { font-style: italic; background: linear-gradient(135deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
-    .hero-sub { font-family: 'DM Serif Display', serif; font-size: clamp(17px, 1.8vw, 22px); font-weight: 400; font-style: italic; color: var(--text-muted); margin-bottom: 36px; letter-spacing: 0.04em; }
-    .hero-desc { font-size: 14px; line-height: 2.1; color: var(--text-muted); max-width: 400px; margin-bottom: 48px; }
-    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; }
-    .btn-primary { font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 15px 36px; text-decoration: none; transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(46,125,155,0.28); }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,125,155,0.32); }
-    .btn-secondary { font-size: 12px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text); border: 1px solid var(--border); padding: 15px 36px; text-decoration: none; transition: border-color 0.2s, color 0.2s, transform 0.2s; }
-    .btn-secondary:hover { border-color: var(--accent); color: var(--accent); transform: translateY(-2px); }
-    .hero-right { position: relative; overflow: hidden; background: linear-gradient(145deg, #0f2a3a 0%, #2e7d9b 40%, #4a8fa8 100%); }
-    .hero-mesh { position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 80% 20%, rgba(106,180,204,0.22) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 20% 80%, rgba(200,169,110,0.12) 0%, transparent 60%); }
-    .hero-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px); background-size: 48px 48px; }
-    .hero-visual { position: relative; z-index: 1; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 20px; padding: 80px 48px; }
-    .hero-stat { background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); padding: 28px 36px; width: 100%; max-width: 300px; border-left: 2px solid var(--accent3); animation: fadeUp 0.9s ease both; transition: background 0.25s, transform 0.25s; }
-    .hero-stat:hover { background: rgba(255,255,255,0.11); transform: translateX(4px); }
-    .hero-stat:nth-child(2) { animation-delay: 0.15s; margin-left: 48px; }
-    .hero-stat:nth-child(3) { animation-delay: 0.3s; }
-    .stat-num { font-family: 'DM Serif Display', serif; font-size: 40px; color: var(--white); line-height: 1; margin-bottom: 6px; }
-    .stat-num span { font-size: 20px; color: rgba(255,255,255,0.7); }
-    .stat-label { font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); }
+    /* Hamburger (mobile) */
+    .nav-burger { display: none; width: 40px; height: 40px; background: none; border: none; cursor: pointer; flex-direction: column; align-items: center; justify-content: center; gap: 6px; z-index: 320; }
+    .nav-burger span { display: block; width: 24px; height: 2px; background: var(--white); transition: transform 0.35s var(--ease-out), opacity 0.3s, background 0.4s; }
+    nav.scrolled .nav-burger span { background: var(--text); }
+    body.menu-open .nav-burger span { background: var(--white) !important; }
+    body.menu-open .nav-burger span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+    body.menu-open .nav-burger span:nth-child(2) { opacity: 0; }
+    body.menu-open .nav-burger span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+    .mobile-menu { position: fixed; inset: 0; z-index: 300; background: linear-gradient(160deg, var(--ink) 0%, #14384c 100%); display: flex; flex-direction: column; justify-content: center; padding: 0 36px; opacity: 0; visibility: hidden; transition: opacity 0.45s ease, visibility 0.45s; }
+    body.menu-open .mobile-menu { opacity: 1; visibility: visible; }
+    .mobile-menu a { font-family: 'DM Serif Display', serif; font-size: 34px; color: var(--white); text-decoration: none; padding: 14px 0; border-bottom: 1px solid rgba(255,255,255,0.08); display: flex; align-items: baseline; gap: 16px; opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease, transform 0.5s var(--ease-out); }
+    body.menu-open .mobile-menu a { opacity: 1; transform: translateY(0); }
+    body.menu-open .mobile-menu a:nth-child(1) { transition-delay: 0.10s; }
+    body.menu-open .mobile-menu a:nth-child(2) { transition-delay: 0.16s; }
+    body.menu-open .mobile-menu a:nth-child(3) { transition-delay: 0.22s; }
+    body.menu-open .mobile-menu a:nth-child(4) { transition-delay: 0.28s; }
+    body.menu-open .mobile-menu a:nth-child(5) { transition-delay: 0.34s; }
+    .mobile-menu a small { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.2em; color: var(--gold-light); }
 
-    /* SECTION BASE */
-    section { padding: 120px 80px; }
-    .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--accent2); text-transform: uppercase; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+    /* ============ HERO ============ */
+    #home { position: relative; min-height: 100vh; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; background: linear-gradient(145deg, #0f2a3a 0%, #1d5570 55%, #2e7d9b 100%); }
+    .hero-bg { position: absolute; inset: -6%; background-position: center; background-size: cover; background-image: url('https://images.unsplash.com/photo-1553413077-190dd305871c?auto=format&fit=crop&w=2000&q=80'); animation: kenburns 24s ease-in-out infinite alternate; will-change: transform; }
+    @keyframes kenburns { from { transform: scale(1) translateY(0); } to { transform: scale(1.09) translateY(-1.5%); } }
+    .hero-overlay { position: absolute; inset: 0; background: linear-gradient(100deg, rgba(10,31,46,0.94) 0%, rgba(15,42,58,0.82) 45%, rgba(15,42,58,0.45) 100%); }
+    .hero-overlay::after { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 60% 50% at 85% 15%, rgba(106,180,204,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 60% at 15% 85%, rgba(200,169,110,0.10) 0%, transparent 60%); }
+    .hero-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.035) 1px, transparent 1px); background-size: 56px 56px; mask-image: linear-gradient(to bottom, transparent, black 30%); -webkit-mask-image: linear-gradient(to bottom, transparent, black 30%); }
+    .hero-inner { position: relative; z-index: 2; padding: 180px 80px 0; max-width: 1280px; width: 100%; margin: 0 auto; flex: 1; display: flex; flex-direction: column; justify-content: center; }
+    .hero-tag { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.28em; color: var(--accent3); text-transform: uppercase; margin-bottom: 36px; display: flex; align-items: center; gap: 14px; opacity: 0; animation: fadeUp 0.9s var(--ease-out) 0.5s forwards; }
+    .hero-tag::before { content: ''; display: block; width: 44px; height: 1px; background: linear-gradient(90deg, var(--gold-light), transparent); }
+    .hero-h1 { font-family: 'DM Serif Display', serif; font-size: clamp(42px, 6.4vw, 88px); font-weight: 400; line-height: 1.18; letter-spacing: 0.01em; color: var(--white); margin-bottom: 26px; }
+    .hero-h1 .line { display: block; overflow: hidden; }
+    .hero-h1 .line span { display: block; transform: translateY(110%); animation: lineReveal 1.1s var(--ease-out) forwards; }
+    .hero-h1 .line:nth-child(1) span { animation-delay: 0.65s; }
+    .hero-h1 .line:nth-child(2) span { animation-delay: 0.8s; }
+    @keyframes lineReveal { to { transform: translateY(0); } }
+    .hero-h1 em { font-style: italic; background: linear-gradient(120deg, var(--accent3) 20%, var(--gold-light) 90%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .hero-sub { font-family: 'DM Serif Display', serif; font-size: clamp(16px, 1.8vw, 22px); font-style: italic; color: rgba(255,255,255,0.6); margin-bottom: 36px; letter-spacing: 0.06em; opacity: 0; animation: fadeUp 0.9s var(--ease-out) 1.05s forwards; }
+    .hero-desc { font-size: 14px; line-height: 2.2; color: rgba(255,255,255,0.65); max-width: 460px; margin-bottom: 44px; opacity: 0; animation: fadeUp 0.9s var(--ease-out) 1.2s forwards; }
+    .hero-btns { display: flex; gap: 16px; flex-wrap: wrap; opacity: 0; animation: fadeUp 0.9s var(--ease-out) 1.35s forwards; }
+    .btn-primary { position: relative; overflow: hidden; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); padding: 16px 40px; text-decoration: none; transition: transform 0.25s, box-shadow 0.25s; box-shadow: 0 4px 20px rgba(46,125,155,0.45); }
+    .btn-primary::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
+    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 30px rgba(46,125,155,0.5); }
+    .btn-primary:hover::before { transform: translateX(100%); }
+    .btn-ghost { font-size: 12px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--white); border: 1px solid rgba(255,255,255,0.35); padding: 16px 40px; text-decoration: none; transition: border-color 0.25s, background 0.25s, transform 0.25s; backdrop-filter: blur(4px); }
+    .btn-ghost:hover { border-color: var(--gold-light); background: rgba(255,255,255,0.06); transform: translateY(-2px); }
+    .hero-scroll { position: absolute; z-index: 3; bottom: 130px; right: 52px; display: flex; flex-direction: column; align-items: center; gap: 12px; font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: 0.3em; color: rgba(255,255,255,0.5); writing-mode: vertical-rl; }
+    .hero-scroll::after { content: ''; width: 1px; height: 48px; background: linear-gradient(rgba(255,255,255,0.5), transparent); animation: scrollPulse 2s ease-in-out infinite; }
+    @keyframes scrollPulse { 0%, 100% { transform: scaleY(1); opacity: 1; } 50% { transform: scaleY(0.55); opacity: 0.4; } }
+
+    /* Hero stats bar */
+    .hero-stats { position: relative; z-index: 2; display: grid; grid-template-columns: repeat(3, 1fr); max-width: 1280px; width: calc(100% - 160px); margin: 72px auto 0; border-top: 1px solid rgba(255,255,255,0.14); opacity: 0; animation: fadeUp 1s var(--ease-out) 1.5s forwards; }
+    .hero-stat { padding: 30px 36px 40px; border-right: 1px solid rgba(255,255,255,0.14); display: flex; align-items: baseline; gap: 16px; transition: background 0.3s; }
+    .hero-stat:first-child { border-left: 1px solid rgba(255,255,255,0.14); }
+    .hero-stat:hover { background: rgba(255,255,255,0.05); }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 52px; color: var(--white); line-height: 1; }
+    .stat-num small { font-size: 22px; color: rgba(255,255,255,0.65); margin-left: 2px; }
+    .stat-label { font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); line-height: 1.7; }
+
+    /* ============ MARQUEE ============ */
+    .marquee { background: var(--ink); border-top: 1px solid rgba(255,255,255,0.06); padding: 22px 0; overflow: hidden; position: relative; }
+    .marquee::before, .marquee::after { content: ''; position: absolute; top: 0; bottom: 0; width: 120px; z-index: 2; pointer-events: none; }
+    .marquee::before { left: 0; background: linear-gradient(90deg, var(--ink), transparent); }
+    .marquee::after { right: 0; background: linear-gradient(-90deg, var(--ink), transparent); }
+    .marquee-track { display: flex; gap: 64px; width: max-content; animation: marquee 30s linear infinite; }
+    .marquee:hover .marquee-track { animation-play-state: paused; }
+    @keyframes marquee { to { transform: translateX(-50%); } }
+    .marquee-item { display: flex; align-items: center; gap: 64px; font-family: 'DM Mono', monospace; font-size: 12px; letter-spacing: 0.35em; color: rgba(255,255,255,0.4); text-transform: uppercase; white-space: nowrap; }
+    .marquee-item i { font-style: normal; color: var(--gold-light); font-size: 8px; }
+
+    /* ============ SECTION BASE ============ */
+    section { padding: 130px 80px; }
+    .section-inner { max-width: 1280px; margin: 0 auto; }
+    .section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--accent2); text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 12px; }
     .section-label::before { content: ''; display: block; width: 28px; height: 1px; background: linear-gradient(90deg, var(--accent2), transparent); }
-    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(30px, 3.5vw, 48px); font-weight: 400; line-height: 1.2; color: var(--text); margin-bottom: 20px; }
-    .section-desc { font-size: 14px; line-height: 2.1; color: var(--text-muted); max-width: 560px; }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(32px, 3.8vw, 52px); font-weight: 400; line-height: 1.2; color: var(--text); margin-bottom: 22px; }
+    .section-desc { font-size: 14px; line-height: 2.2; color: var(--text-muted); max-width: 560px; }
 
-    /* BUSINESS */
+    /* ============ BUSINESS ============ */
     #business { background: var(--off-white); position: relative; overflow: hidden; }
-    #business::before { content: 'BUSINESS'; position: absolute; top: 40px; right: -20px; font-family: 'DM Serif Display', serif; font-size: 120px; color: rgba(46,125,155,0.06); letter-spacing: 0.1em; white-space: nowrap; pointer-events: none; }
-    .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 64px; }
-    .business-card { background: var(--white); padding: 48px 40px; border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
-    .business-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--accent3)); transform: scaleX(0); transform-origin: left; transition: transform 0.35s ease; }
-    .business-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-lg); }
-    .business-card:hover::before { transform: scaleX(1); }
-    .biz-num { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--accent3); margin-bottom: 20px; }
-    .biz-icon { width: 52px; height: 52px; background: linear-gradient(135deg, var(--accent-light), #c8e2ed); border-radius: 14px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(46,125,155,0.12); }
-    .biz-title { font-family: 'DM Serif Display', serif; font-size: 22px; font-weight: 400; margin-bottom: 14px; color: var(--text); }
-    .biz-desc { font-size: 13px; line-height: 2.1; color: var(--text-muted); }
-    .biz-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    #business::before { content: 'BUSINESS'; position: absolute; top: 44px; right: -24px; font-family: 'DM Serif Display', serif; font-size: 140px; color: rgba(46,125,155,0.055); letter-spacing: 0.08em; white-space: nowrap; pointer-events: none; }
+    .business-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 72px; }
+    .business-card { background: var(--white); border: 1px solid var(--border); position: relative; overflow: hidden; transition: transform 0.4s var(--ease-out), box-shadow 0.4s; display: flex; flex-direction: column; }
+    .business-card:hover { transform: translateY(-8px); box-shadow: var(--shadow-lg); }
+    .biz-photo { position: relative; height: 210px; overflow: hidden; background: linear-gradient(135deg, var(--ink2), var(--accent2)); }
+    .biz-photo img { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.02); transition: transform 0.8s var(--ease-out), filter 0.5s; filter: saturate(0.9); }
+    .business-card:hover .biz-photo img { transform: scale(1.1); filter: saturate(1.05); }
+    .biz-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(15,42,58,0.12), rgba(15,42,58,0.42)); pointer-events: none; }
+    .biz-num { position: absolute; z-index: 2; top: 20px; left: 24px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.22em; color: var(--white); background: rgba(10,31,46,0.55); backdrop-filter: blur(6px); border: 1px solid rgba(255,255,255,0.2); padding: 6px 14px; }
+    .biz-body { padding: 36px 36px 44px; flex: 1; display: flex; flex-direction: column; }
+    .biz-title { font-family: 'DM Serif Display', serif; font-size: 23px; font-weight: 400; margin-bottom: 14px; color: var(--text); }
+    .biz-desc { font-size: 13px; line-height: 2.1; color: var(--text-muted); flex: 1; }
+    .biz-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 26px; }
     .biz-tag { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.1em; color: var(--accent); background: var(--accent-light); border: 1px solid rgba(46,125,155,0.15); padding: 4px 12px; }
+    .business-card::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--accent), var(--gold-light)); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease-out); z-index: 3; }
+    .business-card:hover::after { transform: scaleX(1); }
 
-    /* BRANDS */
+    /* ============ BRANDS ============ */
     #brands { background: var(--white); position: relative; overflow: hidden; }
-    #brands::after { content: ''; position: absolute; bottom: -100px; right: -100px; width: 400px; height: 400px; border-radius: 50%; background: radial-gradient(circle, rgba(200,169,110,0.07), transparent 70%); pointer-events: none; }
-    .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; margin-top: 64px; }
-    .brand-card { border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.3s, transform 0.3s; }
-    .brand-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-6px); }
-    .brand-header { padding: 40px 36px 32px; position: relative; overflow: hidden; display: flex; flex-direction: column; align-items: flex-start; gap: 16px; min-height: 200px; justify-content: flex-end; }
-    .brand-logo { max-height: 80px; max-width: 200px; object-fit: contain; position: relative; z-index: 1; }
-    .brand-card:nth-child(1) .brand-header { background: linear-gradient(135deg, #1a3040, #2e7d9b); }
-    .brand-card:nth-child(2) .brand-header { background: linear-gradient(135deg, #1e2d40, #3d6e8a); }
-    .brand-card:nth-child(3) .brand-header { background: linear-gradient(135deg, #f9f3ef, #f0e6df); }
-    .brand-card:nth-child(3) .brand-name { color: #8b5e3c; }
-    .brand-card:nth-child(3) .brand-reg { color: rgba(139,94,60,0.5); }
-    .brand-header::after { content: ''; position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(255,255,255,0.05); }
-    .brand-name { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.2em; color: var(--white); margin-bottom: 8px; position: relative; z-index: 1; }
-    .brand-reg { font-size: 10px; color: rgba(255,255,255,0.45); letter-spacing: 0.1em; position: relative; z-index: 1; }
-    .brand-body { padding: 32px 36px; background: var(--white); }
-    .brand-tagline { font-family: 'DM Serif Display', serif; font-size: 18px; font-style: italic; color: var(--accent); margin-bottom: 16px; line-height: 1.5; }
-    .brand-card:nth-child(2) .brand-tagline { color: #3d6e8a; }
-    .brand-card:nth-child(3) .brand-tagline { color: #6b4535; }
-    .brand-desc { font-size: 13px; line-height: 2.1; color: var(--text-muted); }
-    .brand-items { margin-top: 20px; padding-top: 20px; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: 0.08em; color: var(--mid-gray); }
+    #brands::after { content: ''; position: absolute; bottom: -120px; right: -120px; width: 440px; height: 440px; border-radius: 50%; background: radial-gradient(circle, rgba(200,169,110,0.08), transparent 70%); pointer-events: none; }
+    .brands-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; margin-top: 72px; }
+    .brand-card { border: 1px solid var(--border); overflow: hidden; transition: box-shadow 0.4s, transform 0.4s var(--ease-out); background: var(--white); display: flex; flex-direction: column; }
+    .brand-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-8px); }
+    .brand-photo { position: relative; height: 240px; overflow: hidden; }
+    .brand-photo img.brand-bg { width: 100%; height: 100%; object-fit: cover; display: block; transform: scale(1.02); transition: transform 0.9s var(--ease-out); }
+    .brand-card:hover .brand-photo img.brand-bg { transform: scale(1.09); }
+    .brand-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(10,31,46,0.15) 0%, rgba(10,31,46,0.55) 100%); }
+    .brand-card:nth-child(1) .brand-photo { background: linear-gradient(135deg, #1a3040, #2e7d9b); }
+    .brand-card:nth-child(2) .brand-photo { background: linear-gradient(135deg, #1e3d2d, #3d8a5e); }
+    .brand-card:nth-child(3) .brand-photo { background: linear-gradient(135deg, #f9f3ef, #e8c9b8); }
+    .brand-id { position: absolute; z-index: 2; left: 28px; bottom: 24px; display: flex; align-items: center; gap: 16px; }
+    .brand-badge { width: 72px; height: 72px; border-radius: 50%; background: var(--white); box-shadow: 0 4px 16px rgba(0,0,0,0.25); overflow: hidden; flex-shrink: 0; display: flex; align-items: center; justify-content: center; border: 2px solid rgba(255,255,255,0.85); }
+    .brand-badge img { width: 100%; height: 100%; object-fit: cover; }
+    .brand-badge.mican img { transform: scale(1.35); }
+    .brand-badge.stanrise { background: linear-gradient(135deg, #10222e, #2e7d9b); }
+    .brand-badge.stanrise span { font-family: 'DM Mono', monospace; font-weight: 500; font-size: 22px; color: var(--white); letter-spacing: 0; }
+    .brand-name { font-family: 'DM Mono', monospace; font-size: 15px; font-weight: 500; letter-spacing: 0.18em; color: var(--white); text-shadow: 0 1px 8px rgba(0,0,0,0.4); }
+    .brand-reg { font-size: 10px; color: rgba(255,255,255,0.75); letter-spacing: 0.1em; margin-top: 5px; text-shadow: 0 1px 6px rgba(0,0,0,0.4); }
+    .brand-body { padding: 34px 36px 40px; background: var(--white); flex: 1; display: flex; flex-direction: column; }
+    .brand-tagline { font-family: 'DM Serif Display', serif; font-size: 19px; font-style: italic; color: var(--accent); margin-bottom: 16px; line-height: 1.5; }
+    .brand-card:nth-child(2) .brand-tagline { color: #2e7d4f; }
+    .brand-card:nth-child(3) .brand-tagline { color: #b06a4d; }
+    .brand-desc { font-size: 13px; line-height: 2.1; color: var(--text-muted); flex: 1; }
+    .brand-items { margin-top: 22px; padding-top: 22px; border-top: 1px solid var(--border); font-size: 11px; letter-spacing: 0.08em; color: var(--mid-gray); display: flex; align-items: center; gap: 10px; }
+    .brand-items::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--gold-light)); flex-shrink: 0; }
 
-    /* GLOBAL */
-    #global { position: relative; overflow: hidden; background: linear-gradient(160deg, #0a1f2e 0%, #2e7d9b 50%, #0f2a3a 100%); color: var(--white); }
-    #global::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 90% 10%, rgba(106,180,204,0.18) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 10% 90%, rgba(200,169,110,0.10) 0%, transparent 60%); }
+    /* ============ GLOBAL ============ */
+    #global { position: relative; overflow: hidden; background: linear-gradient(160deg, #0a1f2e 0%, #16455c 50%, #0f2a3a 100%); color: var(--white); }
+    #global::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 70% 50% at 90% 10%, rgba(106,180,204,0.16) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 10% 90%, rgba(200,169,110,0.10) 0%, transparent 60%); }
     .global-grid-lines { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px); background-size: 60px 60px; }
     #global .section-label { color: var(--accent3); position: relative; z-index: 1; }
     #global .section-label::before { background: linear-gradient(90deg, var(--accent3), transparent); }
     #global .section-title { color: var(--white); position: relative; z-index: 1; }
     #global .section-desc { color: rgba(255,255,255,0.55); position: relative; z-index: 1; }
-    .shopee-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: center; position: relative; z-index: 1; }
+    .global-photo { position: relative; z-index: 1; margin-top: 64px; height: 300px; overflow: hidden; border: 1px solid rgba(255,255,255,0.12); background: linear-gradient(135deg, #10344a, #2e7d9b); }
+    .global-photo img { width: 100%; height: 100%; object-fit: cover; object-position: center 60%; display: block; opacity: 0.85; transform: scale(1.02); transition: transform 6s ease; }
+    .global-photo:hover img { transform: scale(1.08); }
+    .global-photo::after { content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(10,31,46,0.55), transparent 55%); }
+    .global-photo-caption { position: absolute; z-index: 2; left: 36px; bottom: 30px; }
+    .global-photo-caption .cap-en { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.3em; color: var(--gold-light); text-transform: uppercase; margin-bottom: 8px; }
+    .global-photo-caption .cap-ja { font-family: 'DM Serif Display', serif; font-size: 24px; color: var(--white); }
+    .shopee-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 56px; align-items: center; position: relative; z-index: 1; }
     .countries-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; }
-    .country-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 28px 24px; transition: background 0.25s, transform 0.25s, border-color 0.25s; }
-    .country-card:hover { background: rgba(255,255,255,0.10); border-color: rgba(106,180,204,0.4); transform: scale(1.02); }
+    .country-card { position: relative; overflow: hidden; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); padding: 28px 24px; transition: background 0.3s, transform 0.3s, border-color 0.3s; }
+    .country-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: linear-gradient(90deg, var(--accent3), transparent); transform: scaleX(0); transform-origin: left; transition: transform 0.4s var(--ease-out); }
+    .country-card:hover { background: rgba(255,255,255,0.10); border-color: rgba(106,180,204,0.4); transform: translateY(-3px); }
+    .country-card:hover::before { transform: scaleX(1); }
     .country-abbr { display: inline-block; font-family: 'DM Mono', monospace; font-size: 20px; font-weight: 500; letter-spacing: 0.1em; color: var(--accent3); margin-bottom: 12px; line-height: 1; }
     .country-name { font-size: 14px; font-weight: 400; color: var(--white); margin-bottom: 4px; }
     .country-code { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.15em; color: rgba(255,255,255,0.35); }
     .shopee-info h3 { font-family: 'DM Serif Display', serif; font-size: 30px; font-weight: 400; color: var(--white); margin-bottom: 20px; line-height: 1.4; }
     .shopee-info p { font-size: 14px; line-height: 2.1; color: rgba(255,255,255,0.55); margin-bottom: 36px; }
     .shopee-badge { display: inline-flex; align-items: center; gap: 12px; background: rgba(255,255,255,0.06); border: 1px solid rgba(106,180,204,0.35); padding: 14px 24px; font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.16em; color: var(--accent3); }
+    .shopee-badge svg { animation: spinSlow 14s linear infinite; }
+    @keyframes spinSlow { to { transform: rotate(360deg); } }
 
-    /* ABOUT */
+    /* ============ ABOUT ============ */
     #about { background: var(--off-white); position: relative; overflow: hidden; }
     #about::before { content: ''; position: absolute; top: -80px; left: -80px; width: 320px; height: 320px; border-radius: 50%; background: radial-gradient(circle, rgba(46,125,155,0.06), transparent 70%); pointer-events: none; }
     .about-layout { display: grid; grid-template-columns: 1fr 1.5fr; gap: 64px; margin-top: 64px; align-items: start; }
@@ -147,24 +257,24 @@
     .about-philosophy::after { content: ''; position: absolute; bottom: -20px; left: -20px; width: 100px; height: 100px; border-radius: 50%; background: rgba(200,169,110,0.08); }
     .phil-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.28em; color: rgba(255,255,255,0.45); text-transform: uppercase; margin-bottom: 28px; position: relative; z-index: 1; }
     .phil-text { font-family: 'DM Serif Display', serif; font-size: 30px; font-weight: 400; line-height: 1.5; color: var(--white); margin-bottom: 24px; position: relative; z-index: 1; }
-    .phil-divider { width: 40px; height: 1px; background: linear-gradient(90deg, var(--gold), transparent); margin-bottom: 24px; position: relative; z-index: 1; }
+    .phil-divider { width: 40px; height: 1px; background: linear-gradient(90deg, var(--gold-light), transparent); margin-bottom: 24px; position: relative; z-index: 1; }
     .phil-desc { font-size: 13px; line-height: 2.3; color: rgba(255,255,255,0.65); position: relative; z-index: 1; }
     .company-table { width: 100%; border-collapse: collapse; }
-    .company-table tr { border-bottom: 1px solid var(--border); }
+    .company-table tr { border-bottom: 1px solid var(--border); transition: background 0.25s; }
+    .company-table tr:hover { background: rgba(46,125,155,0.03); }
     .company-table tr:first-child { border-top: 1px solid var(--border); }
-    .company-table td { padding: 20px 0; vertical-align: top; line-height: 1.8; }
+    .company-table td { padding: 20px 8px; vertical-align: top; line-height: 1.8; }
     .company-table td:first-child { font-family: 'DM Mono', monospace; font-size: 11px; letter-spacing: 0.1em; color: var(--text-muted); width: 150px; padding-right: 24px; }
     .company-table td:last-child { font-size: 14px; color: var(--text); }
     .permit-list { list-style: none; display: flex; flex-direction: column; gap: 6px; }
     .permit-list li { font-size: 12px; color: var(--text-muted); padding-left: 16px; position: relative; }
     .permit-list li::before { content: ''; position: absolute; left: 0; top: 8px; width: 5px; height: 5px; background: var(--accent2); border-radius: 50%; }
 
-    /* CONTACT */
+    /* ============ CONTACT ============ */
     #contact { background: var(--white); position: relative; overflow: hidden; }
     #contact::before { content: ''; position: absolute; bottom: -120px; right: -120px; width: 360px; height: 360px; border-radius: 50%; background: radial-gradient(circle, rgba(46,125,155,0.05), transparent 70%); pointer-events: none; }
     .contact-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 80px; margin-top: 64px; align-items: start; }
-    .contact-info p { font-size: 14px; line-height: 2.1; color: var(--text-muted); margin-bottom: 40px; }
-    .contact-mail { display: flex; align-items: center; gap: 18px; padding: 24px 28px; border: 1px solid var(--border); text-decoration: none; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; }
+    .contact-mail { display: flex; align-items: center; gap: 18px; padding: 24px 28px; border: 1px solid var(--border); text-decoration: none; transition: border-color 0.3s, transform 0.3s, box-shadow 0.3s; }
     .contact-mail:hover { border-color: var(--accent2); transform: translateX(6px); box-shadow: var(--shadow-md); }
     .mail-icon { width: 44px; height: 44px; background: linear-gradient(135deg, var(--accent-light), #c8e2ed); border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; box-shadow: 0 4px 12px rgba(46,125,155,0.12); }
     .mail-text { flex: 1; }
@@ -172,48 +282,84 @@
     .mail-addr { font-size: 14px; color: var(--text); font-weight: 500; }
     .contact-types { display: flex; flex-direction: column; gap: 14px; margin-top: 32px; }
     .contact-type { display: flex; align-items: center; gap: 12px; font-size: 13px; color: var(--text-muted); }
-    .contact-type::before { content: ''; display: block; width: 7px; height: 7px; background: linear-gradient(135deg, var(--accent), var(--accent3)); border-radius: 50%; flex-shrink: 0; }
+    .contact-type::before { content: ''; display: block; width: 7px; height: 7px; background: linear-gradient(135deg, var(--accent), var(--gold-light)); border-radius: 50%; flex-shrink: 0; }
     .contact-form { display: flex; flex-direction: column; gap: 20px; }
     .form-group { display: flex; flex-direction: column; gap: 8px; }
     .form-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: 0.2em; color: var(--text-muted); text-transform: uppercase; }
     .form-input, .form-select, .form-textarea { font-family: 'Noto Sans JP', sans-serif; font-size: 14px; font-weight: 300; color: var(--text); background: var(--off-white); border: 1px solid var(--border); padding: 14px 18px; outline: none; transition: border-color 0.2s, background 0.2s, box-shadow 0.2s; width: 100%; }
-    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent2); background: var(--white); box-shadow: 0 0 0 3px rgba(45,122,79,0.08); }
+    .form-input:focus, .form-select:focus, .form-textarea:focus { border-color: var(--accent2); background: var(--white); box-shadow: 0 0 0 3px rgba(46,125,155,0.10); }
     .form-textarea { resize: vertical; min-height: 120px; }
-    .form-submit { font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; padding: 16px 44px; cursor: pointer; text-transform: uppercase; align-self: flex-start; transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s; box-shadow: 0 4px 16px rgba(46,125,155,0.28); }
-    .form-submit:hover { opacity: 0.9; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,125,155,0.32); }
+    .form-submit { position: relative; overflow: hidden; font-family: 'Noto Sans JP', sans-serif; font-size: 12px; font-weight: 500; letter-spacing: 0.14em; color: var(--white); background: linear-gradient(135deg, var(--accent), var(--accent2)); border: none; padding: 16px 44px; cursor: pointer; text-transform: uppercase; align-self: flex-start; transition: transform 0.25s, box-shadow 0.25s; box-shadow: 0 4px 16px rgba(46,125,155,0.28); }
+    .form-submit::before { content: ''; position: absolute; inset: 0; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.25) 50%, transparent 70%); transform: translateX(-100%); transition: transform 0.6s ease; }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(46,125,155,0.35); }
+    .form-submit:hover::before { transform: translateX(100%); }
 
-    /* FOOTER */
-    footer { background: linear-gradient(145deg, #0a1f2e, #1a3a4d); color: rgba(255,255,255,0.45); padding: 56px 80px; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; position: relative; overflow: hidden; }
+    /* ============ FOOTER ============ */
+    footer { background: linear-gradient(145deg, #0a1f2e, #1a3a4d); color: rgba(255,255,255,0.45); padding: 64px 80px; position: relative; overflow: hidden; }
     footer::before { content: ''; position: absolute; top: -80px; right: -80px; width: 300px; height: 300px; border-radius: 50%; background: radial-gradient(circle, rgba(106,180,204,0.08), transparent 70%); }
+    .footer-inner { max-width: 1280px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; align-items: center; gap: 40px; position: relative; z-index: 1; }
     .footer-logo { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; letter-spacing: 0.22em; color: var(--white); text-transform: uppercase; margin-bottom: 8px; }
+    .footer-tagline { font-family: 'DM Serif Display', serif; font-style: italic; font-size: 13px; color: rgba(255,255,255,0.35); margin-bottom: 14px; letter-spacing: 0.04em; }
     .footer-copy { font-size: 11px; letter-spacing: 0.06em; }
-    .footer-links { display: flex; gap: 28px; list-style: none; position: relative; z-index: 1; }
+    .footer-links { display: flex; gap: 28px; list-style: none; }
     .footer-links a { font-size: 11px; letter-spacing: 0.1em; color: rgba(255,255,255,0.4); text-decoration: none; text-transform: uppercase; transition: color 0.2s; }
     .footer-links a:hover { color: var(--accent3); }
 
-    /* ANIMATIONS */
-    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
-    .fade-up { opacity: 0; transform: translateY(28px); transition: opacity 0.75s ease, transform 0.75s ease; }
-    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    /* ============ BACK TO TOP ============ */
+    #toTop { position: fixed; right: 28px; bottom: 28px; z-index: 150; width: 46px; height: 46px; border: 1px solid var(--border); background: rgba(255,255,255,0.9); backdrop-filter: blur(8px); cursor: pointer; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transform: translateY(12px); transition: opacity 0.35s, visibility 0.35s, transform 0.35s, border-color 0.25s; box-shadow: var(--shadow-sm); }
+    #toTop.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    #toTop:hover { border-color: var(--accent2); }
+    #toTop svg { transition: transform 0.25s; }
+    #toTop:hover svg { transform: translateY(-2px); }
 
-    /* MOBILE */
+    /* ============ REVEAL ANIMATIONS ============ */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(28px); } to { opacity: 1; transform: translateY(0); } }
+    .fade-up { opacity: 0; transform: translateY(34px); transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out); transition-delay: var(--d, 0s); }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+    .clip-reveal { position: relative; }
+    .clip-reveal .curtain { position: absolute; inset: 0; z-index: 4; background: linear-gradient(135deg, var(--ink), #16455c); transform: scaleY(1); transform-origin: bottom; transition: transform 1.2s var(--ease-out) 0.15s; pointer-events: none; }
+    .clip-reveal.visible .curtain { transform: scaleY(0); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+      html { scroll-behavior: auto; }
+      .fade-up { opacity: 1; transform: none; }
+      .clip-reveal .curtain { display: none; }
+      .hero-tag, .hero-sub, .hero-desc, .hero-btns, .hero-stats { opacity: 1; }
+      .hero-h1 .line span { transform: none; }
+    }
+
+    /* ============ MOBILE ============ */
     @media (max-width: 960px) {
-      nav { padding: 0 24px; }
-      .nav-links { display: none; }
-      section { padding: 80px 24px; }
-      footer { padding: 40px 24px; grid-template-columns: 1fr; }
-      #home { grid-template-columns: 1fr; min-height: auto; }
-      .hero-left { padding: 80px 24px 48px; }
-      .hero-h1 { white-space: normal !important; font-size: clamp(28px, 7vw, 40px); }
-      .hero-right { min-height: 340px; }
-      .hero-stat:nth-child(2) { margin-left: 0; }
+      nav { padding: 0 22px; }
+      .nav-links, .nav-contact { display: none; }
+      .nav-burger { display: flex; }
+      section { padding: 88px 22px; }
+      .hero-inner { padding: 140px 22px 0; }
+      .hero-h1 { font-size: clamp(28px, 8.4vw, 52px); }
+      .hero-stats { width: calc(100% - 44px); grid-template-columns: 1fr; margin-top: 56px; }
+      .hero-stat { border: none; border-top: 1px solid rgba(255,255,255,0.12); padding: 20px 8px; }
+      .hero-stat:first-child { border-left: none; border-top: none; }
+      .hero-scroll { display: none; }
       .business-grid, .brands-grid { grid-template-columns: 1fr; }
       .shopee-layout, .about-layout, .contact-layout { grid-template-columns: 1fr; gap: 48px; }
       .countries-grid { grid-template-columns: 1fr 1fr; }
+      .global-photo { height: 220px; }
+      .global-photo-caption { left: 22px; bottom: 20px; }
+      footer { padding: 48px 22px; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .footer-links { flex-wrap: wrap; }
+      #toTop { right: 18px; bottom: 18px; }
+      #business::before { font-size: 72px; }
     }
   </style>
 </head>
 <body>
+
+  <div id="loader" aria-hidden="true">
+    <div class="loader-word"><span>S</span><span>U</span><span>R</span><span>P</span><span>L</span><span>U</span><span>S</span></div>
+    <div class="loader-bar"></div>
+  </div>
 
   <nav id="nav">
     <a href="#home" class="nav-logo">
@@ -221,103 +367,157 @@
       <div class="nav-logo-divider"></div>
       <div><div class="nav-logo-text">SURPLUS</div><div class="nav-logo-sub">INC</div></div>
     </a>
-    <ul class="nav-links">
-      <li><a href="#business">Business</a></li>
-      <li><a href="#brands">Brands</a></li>
-      <li><a href="#global">Global</a></li>
-      <li><a href="#about">About</a></li>
-    </ul>
-    <a href="#contact" class="nav-contact">Contact</a>
+    <div class="nav-right">
+      <ul class="nav-links">
+        <li><a href="#business">Business</a></li>
+        <li><a href="#brands">Brands</a></li>
+        <li><a href="#global">Global</a></li>
+        <li><a href="#about">About</a></li>
+      </ul>
+      <a href="#contact" class="nav-contact">Contact</a>
+      <button class="nav-burger" id="burger" aria-label="メニュー"><span></span><span></span><span></span></button>
+    </div>
   </nav>
 
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="#business"><small>01</small>Business</a>
+    <a href="#brands"><small>02</small>Brands</a>
+    <a href="#global"><small>03</small>Global</a>
+    <a href="#about"><small>04</small>About</a>
+    <a href="#contact"><small>05</small>Contact</a>
+  </div>
+
   <section id="home">
-    <div class="hero-left">
+    <div class="hero-bg" id="heroBg" role="img" aria-label="物流倉庫のイメージ"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-grid-lines"></div>
+    <div class="hero-inner">
       <p class="hero-tag">SURPLUS Inc. — Est. 2026, Oita Japan</p>
-      <h1 class="hero-h1" style="white-space: nowrap;">余裕をつくり、<br><em>世界に</em>プラスを。</h1>
+      <h1 class="hero-h1">
+        <span class="line"><span>余裕をつくり、</span></span>
+        <span class="line"><span><em>世界に</em>プラスを。</span></span>
+      </h1>
       <p class="hero-sub">Creating Value, Making Life Better.</p>
       <p class="hero-desc">欲しい人に、必要なものを。国内外のECを軸に、暮らしをちょっと便利にするプロダクトを届けています。Amazon・楽天市場・Yahoo!ショッピング・Shopeeで、3つのブランドを展開中。</p>
       <div class="hero-btns">
         <a href="#brands" class="btn-primary">ブランドを見る</a>
-        <a href="#about" class="btn-secondary">会社概要</a>
+        <a href="#about" class="btn-ghost">会社概要</a>
       </div>
     </div>
-    <div class="hero-right">
-      <div class="hero-mesh"></div>
-      <div class="hero-grid-lines"></div>
-      <div class="hero-visual">
-        <div class="hero-stat">
-          <div class="stat-num">3</div>
-          <div class="stat-label">自社ブランド展開中</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-num">5<span>ヶ国</span></div>
-          <div class="stat-label">東南アジア Shopee 展開</div>
-        </div>
-        <div class="hero-stat">
-          <div class="stat-num">4</div>
-          <div class="stat-label">主要モール出店</div>
-        </div>
+    <div class="hero-scroll">SCROLL</div>
+    <div class="hero-stats">
+      <div class="hero-stat">
+        <div class="stat-num" data-count="3">0</div>
+        <div class="stat-label">自社ブランド<br>展開中</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num"><span data-count="5">0</span><small>ヶ国</small></div>
+        <div class="stat-label">東南アジア<br>Shopee 展開</div>
+      </div>
+      <div class="hero-stat">
+        <div class="stat-num" data-count="4">0</div>
+        <div class="stat-label">主要モール<br>出店</div>
       </div>
     </div>
   </section>
 
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <div class="marquee-item"><span>Amazon</span><i>◆</i><span>楽天市場</span><i>◆</i><span>Yahoo! Shopping</span><i>◆</i><span>Shopee</span><i>◆</i><span>OEM Production</span><i>◆</i><span>From Oita, Japan</span><i>◆</i></div>
+      <div class="marquee-item"><span>Amazon</span><i>◆</i><span>楽天市場</span><i>◆</i><span>Yahoo! Shopping</span><i>◆</i><span>Shopee</span><i>◆</i><span>OEM Production</span><i>◆</i><span>From Oita, Japan</span><i>◆</i></div>
+    </div>
+  </div>
+
   <section id="business">
-    <p class="section-label fade-up">Business</p>
-    <h2 class="section-title fade-up">事業紹介</h2>
-    <p class="section-desc fade-up">EC事業を核に、自社OEM・就労支援連携まで。<br>ビジネスと社会貢献を両立する仕組みをつくります。</p>
-    <div class="business-grid">
-      <div class="business-card fade-up">
-        <p class="biz-num">01</p>
-        <div class="biz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
-        <h3 class="biz-title">EC事業</h3>
-        <p class="biz-desc">自社ブランド3ブランドを国内外の主要ECプラットフォームで展開。国内はAmazon・楽天市場・Yahoo!ショッピング、海外はShopee（東南アジア5ヶ国）で販売基盤を構築しています。</p>
-        <div class="biz-tags"><span class="biz-tag">Amazon</span><span class="biz-tag">楽天市場</span><span class="biz-tag">Yahoo!</span><span class="biz-tag">Shopee</span></div>
-      </div>
-      <div class="business-card fade-up">
-        <p class="biz-num">02</p>
-        <div class="biz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v2"/><line x1="12" y1="12" x2="12" y2="16"/><line x1="10" y1="14" x2="14" y2="14"/></svg></div>
-        <h3 class="biz-title">自社OEM・プロダクト開発</h3>
-        <p class="biz-desc">海外工場と連携し、品質・デザイン・コストのバランスを重視したプロダクトを企画・製造。生活用品からギフトアイテムまで幅広く開発しています。</p>
-        <div class="biz-tags"><span class="biz-tag">企画</span><span class="biz-tag">OEM製造</span><span class="biz-tag">海外工場連携</span></div>
-      </div>
-      <div class="business-card fade-up">
-        <p class="biz-num">03</p>
-        <div class="biz-icon"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-        <h3 class="biz-title">就労支援連携</h3>
-        <p class="biz-desc">地域の就労継続支援施設（B型等）と連携し、検品・袋入れ・ギフトセット組み・梱包作業を委託。安定した就労機会の創出を通じて、地域の雇用に貢献しています。</p>
-        <div class="biz-tags"><span class="biz-tag">検品</span><span class="biz-tag">梱包</span><span class="biz-tag">地域連携</span></div>
+    <div class="section-inner">
+      <p class="section-label fade-up">Business</p>
+      <h2 class="section-title fade-up">事業紹介</h2>
+      <p class="section-desc fade-up">EC事業を核に、自社OEM・就労支援連携まで。<br>ビジネスと社会貢献を両立する仕組みをつくります。</p>
+      <div class="business-grid">
+        <div class="business-card fade-up" style="--d:0s;">
+          <div class="biz-photo">
+            <img src="https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?auto=format&fit=crop&w=900&q=75" alt="ECの出荷作業" loading="lazy" onerror="this.remove()">
+            <span class="biz-num">01</span>
+          </div>
+          <div class="biz-body">
+            <h3 class="biz-title">EC事業</h3>
+            <p class="biz-desc">自社ブランド3ブランドを国内外の主要ECプラットフォームで展開。国内はAmazon・楽天市場・Yahoo!ショッピング、海外はShopee(東南アジア5ヶ国)で販売基盤を構築しています。</p>
+            <div class="biz-tags"><span class="biz-tag">Amazon</span><span class="biz-tag">楽天市場</span><span class="biz-tag">Yahoo!</span><span class="biz-tag">Shopee</span></div>
+          </div>
+        </div>
+        <div class="business-card fade-up" style="--d:0.12s;">
+          <div class="biz-photo">
+            <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&fit=crop&w=900&q=75" alt="プロダクト開発・製造" loading="lazy" onerror="this.remove()">
+            <span class="biz-num">02</span>
+          </div>
+          <div class="biz-body">
+            <h3 class="biz-title">自社OEM・プロダクト開発</h3>
+            <p class="biz-desc">海外工場と連携し、品質・デザイン・コストのバランスを重視したプロダクトを企画・製造。生活用品からギフトアイテムまで幅広く開発しています。</p>
+            <div class="biz-tags"><span class="biz-tag">企画</span><span class="biz-tag">OEM製造</span><span class="biz-tag">海外工場連携</span></div>
+          </div>
+        </div>
+        <div class="business-card fade-up" style="--d:0.24s;">
+          <div class="biz-photo">
+            <img src="https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=900&q=75" alt="地域との連携" loading="lazy" onerror="this.remove()">
+            <span class="biz-num">03</span>
+          </div>
+          <div class="biz-body">
+            <h3 class="biz-title">就労支援連携</h3>
+            <p class="biz-desc">地域の就労継続支援施設(B型等)と連携し、検品・袋入れ・ギフトセット組み・梱包作業を委託。安定した就労機会の創出を通じて、地域の雇用に貢献しています。</p>
+            <div class="biz-tags"><span class="biz-tag">検品</span><span class="biz-tag">梱包</span><span class="biz-tag">地域連携</span></div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="brands">
-    <p class="section-label fade-up">Our Brands</p>
-    <h2 class="section-title fade-up">ブランド紹介</h2>
-    <p class="section-desc fade-up">それぞれのブランドが独自のコンセプトを持ち、<br>生活のさまざまなシーンに寄り添う商品を届けます。</p>
-    <div class="brands-grid">
-      <div class="brand-card fade-up">
-        <div class="brand-header"><div class="brand-name">STANRISE®</div><div class="brand-reg">登録商標</div></div>
-
-        <div class="brand-body">
-          <p class="brand-tagline">スタンダードを、もう一段上へ。</p>
-          <p class="brand-desc">自動車向けパーツを中心に展開。日常のメンテナンスやカスタムに役立つ実用的なアイテムを提供します。品質とコストのバランスを重視し、車好きのユーザーが"使いやすい"プロダクトを目指しています。</p>
-          <div class="brand-items">自動車向けパーツ（輸入品）</div>
+    <div class="section-inner">
+      <p class="section-label fade-up">Our Brands</p>
+      <h2 class="section-title fade-up">ブランド紹介</h2>
+      <p class="section-desc fade-up">それぞれのブランドが独自のコンセプトを持ち、<br>生活のさまざまなシーンに寄り添う商品を届けます。</p>
+      <div class="brands-grid">
+        <div class="brand-card fade-up" style="--d:0s;">
+          <div class="brand-photo">
+            <img class="brand-bg" src="https://images.unsplash.com/photo-1492144534655-ae79c964c9d7?auto=format&fit=crop&w=900&q=75" alt="自動車" loading="lazy" onerror="this.remove()">
+            <div class="brand-id">
+              <div class="brand-badge stanrise"><span>S</span></div>
+              <div><div class="brand-name">STANRISE®</div><div class="brand-reg">登録商標</div></div>
+            </div>
+          </div>
+          <div class="brand-body">
+            <p class="brand-tagline">スタンダードを、もう一段上へ。</p>
+            <p class="brand-desc">自動車向けパーツを中心に展開。日常のメンテナンスやカスタムに役立つ実用的なアイテムを提供します。品質とコストのバランスを重視し、車好きのユーザーが"使いやすい"プロダクトを目指しています。</p>
+            <div class="brand-items">自動車向けパーツ(輸入品)</div>
+          </div>
         </div>
-      </div>
-      <div class="brand-card fade-up">
-        <div class="brand-header"><img src="images/tsukaeru-labo.png" alt="TSUKAERU LABO" class="brand-logo" style="width:80px; height:80px; border-radius:50%; object-fit:cover; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.15);"><div class="brand-name">TSUKAERU LABO®</div><div class="brand-reg">登録商標</div></div>
-        <div class="brand-body">
-          <p class="brand-tagline">使える＋楽しいを研究するラボ。</p>
-          <p class="brand-desc">工具・ギフト用品・デリバリーバッグなど、日常で役立つアイテムを幅広く展開。実用性だけでなく、"使う楽しさ"を感じられる機能性アイテムを研究・開発しています。</p>
-          <div class="brand-items">工具、ギフト、デリバリーバッグ、ナノガラスなど</div>
+        <div class="brand-card fade-up" style="--d:0.12s;">
+          <div class="brand-photo">
+            <img class="brand-bg" src="https://images.unsplash.com/photo-1530124566582-a618bc2615dc?auto=format&fit=crop&w=900&q=75" alt="工具" loading="lazy" onerror="this.remove()">
+            <div class="brand-id">
+              <div class="brand-badge"><img src="images/tsukaeru-labo.png" alt="TSUKAERU LABO"></div>
+              <div><div class="brand-name">TSUKAERU LABO®</div><div class="brand-reg">登録商標</div></div>
+            </div>
+          </div>
+          <div class="brand-body">
+            <p class="brand-tagline">使える＋楽しいを研究するラボ。</p>
+            <p class="brand-desc">工具・ギフト用品・デリバリーバッグなど、日常で役立つアイテムを幅広く展開。実用性だけでなく、"使う楽しさ"を感じられる機能性アイテムを研究・開発しています。</p>
+            <div class="brand-items">工具、ギフト、デリバリーバッグ、ナノガラスなど</div>
+          </div>
         </div>
-      </div>
-      <div class="brand-card fade-up">
-        <div class="brand-header"><img src="images/mican.jpg" alt="mic.an" class="brand-logo" style="width:80px; height:80px; border-radius:50%; object-fit:cover; background:#fff; box-shadow:0 2px 8px rgba(0,0,0,0.08); transform:scale(1.35);"><div class="brand-name">mic.an®</div><div class="brand-reg">登録商標</div></div>
-        <div class="brand-body">
-          <p class="brand-tagline">愛と安心を届ける、小さな洋服。</p>
-          <p class="brand-desc">海外工場で生産したベビー服を中心に展開。国内で丁寧にラッピングし、贈り物としての品質を高めています。家族の笑顔を思い浮かべながら、安心して贈れるアイテムづくりを大切にしています。</p>
-          <div class="brand-items">ベビー服（100%輸入品）・国内ラッピングギフト</div>
+        <div class="brand-card fade-up" style="--d:0.24s;">
+          <div class="brand-photo">
+            <img class="brand-bg" src="https://images.unsplash.com/photo-1519689680058-324335c77eba?auto=format&fit=crop&w=900&q=75" alt="ベビー" loading="lazy" onerror="this.remove()">
+            <div class="brand-id">
+              <div class="brand-badge mican"><img src="images/mican.jpg" alt="mic.an"></div>
+              <div><div class="brand-name">mic.an®</div><div class="brand-reg">登録商標</div></div>
+            </div>
+          </div>
+          <div class="brand-body">
+            <p class="brand-tagline">愛と安心を届ける、小さな洋服。</p>
+            <p class="brand-desc">海外工場で生産したベビー服を中心に展開。国内で丁寧にラッピングし、贈り物としての品質を高めています。家族の笑顔を思い浮かべながら、安心して贈れるアイテムづくりを大切にしています。</p>
+            <div class="brand-items">ベビー服(100%輸入品)・国内ラッピングギフト</div>
+          </div>
         </div>
       </div>
     </div>
@@ -325,110 +525,187 @@
 
   <section id="global">
     <div class="global-grid-lines"></div>
-    <p class="section-label fade-up">Global</p>
-    <h2 class="section-title fade-up">海外展開</h2>
-    <p class="section-desc fade-up">東南アジアの主要市場にShopeeを通じて展開。<br>各国のニーズに合わせた商品ラインナップを提供しています。</p>
-    <div class="shopee-layout">
-      <div class="countries-grid fade-up">
-        <div class="country-card"><div class="country-abbr">SG</div><div class="country-name">シンガポール</div><div class="country-code">Singapore</div></div>
-        <div class="country-card"><div class="country-abbr">MY</div><div class="country-name">マレーシア</div><div class="country-code">Malaysia</div></div>
-        <div class="country-card"><div class="country-abbr">TH</div><div class="country-name">タイ</div><div class="country-code">Thailand</div></div>
-        <div class="country-card"><div class="country-abbr">PH</div><div class="country-name">フィリピン</div><div class="country-code">Philippines</div></div>
-        <div class="country-card"><div class="country-abbr">VN</div><div class="country-name">ベトナム</div><div class="country-code">Vietnam</div></div>
+    <div class="section-inner">
+      <p class="section-label fade-up">Global</p>
+      <h2 class="section-title fade-up">海外展開</h2>
+      <p class="section-desc fade-up">東南アジアの主要市場にShopeeを通じて展開。<br>各国のニーズに合わせた商品ラインナップを提供しています。</p>
+      <div class="global-photo clip-reveal">
+        <img src="https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&w=1800&q=75" alt="シンガポールの夜景" loading="lazy" onerror="this.remove()">
+        <div class="global-photo-caption">
+          <p class="cap-en">Southeast Asia</p>
+          <p class="cap-ja">大分から、アジアの暮らしへ。</p>
+        </div>
+        <span class="curtain"></span>
       </div>
-      <div class="shopee-info fade-up">
-        <h3>自社ブランド3ブランドを、<br>東南アジア5ヶ国で販売。</h3>
-        <p>Shopeeを通じてシンガポール・マレーシア・タイ・フィリピン・ベトナムで展開。自動車パーツ・工具・ベビー服・ギフト用品など、各国のニーズに合わせた商品ラインナップでアジア市場への販売基盤を構築しています。</p>
-        <div class="shopee-badge">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          Selling on Shopee — 5 Countries
+      <div class="shopee-layout">
+        <div class="countries-grid fade-up">
+          <div class="country-card"><div class="country-abbr">SG</div><div class="country-name">シンガポール</div><div class="country-code">Singapore</div></div>
+          <div class="country-card"><div class="country-abbr">MY</div><div class="country-name">マレーシア</div><div class="country-code">Malaysia</div></div>
+          <div class="country-card"><div class="country-abbr">TH</div><div class="country-name">タイ</div><div class="country-code">Thailand</div></div>
+          <div class="country-card"><div class="country-abbr">PH</div><div class="country-name">フィリピン</div><div class="country-code">Philippines</div></div>
+          <div class="country-card"><div class="country-abbr">VN</div><div class="country-name">ベトナム</div><div class="country-code">Vietnam</div></div>
+        </div>
+        <div class="shopee-info fade-up" style="--d:0.15s;">
+          <h3>自社ブランド3ブランドを、<br>東南アジア5ヶ国で販売。</h3>
+          <p>Shopeeを通じてシンガポール・マレーシア・タイ・フィリピン・ベトナムで展開。自動車パーツ・工具・ベビー服・ギフト用品など、各国のニーズに合わせた商品ラインナップでアジア市場への販売基盤を構築しています。</p>
+          <div class="shopee-badge">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            Selling on Shopee — 5 Countries
+          </div>
         </div>
       </div>
     </div>
   </section>
 
   <section id="about">
-    <p class="section-label fade-up">About Us</p>
-    <h2 class="section-title fade-up">会社概要</h2>
-    <div class="about-layout">
-      <div class="about-philosophy fade-up">
-        <p class="phil-label">Philosophy</p>
-        <p class="phil-text">価値をつくり、<br>余裕を生む。</p>
-        <div class="phil-divider"></div>
-        <p class="phil-desc">SURPLUSという社名には、便利な商品を提供することで"時間や心の余裕"を生み、日々の暮らしを豊かにしたいという想いが込められています。生活を少し楽にし、役立つ価値を届けることを目指しています。</p>
-      </div>
-      <div class="fade-up">
-        <table class="company-table">
-          <tr><td>会社名</td><td>株式会社SURPLUS（SURPLUS Inc.）</td></tr>
-          <tr><td>所在地</td><td>〒870-0108<br>大分県大分市三佐3丁目1番3号<br>鶴崎司法会館 101号室</td></tr>
-          <tr><td>設立</td><td>令和8年4月</td></tr>
-          <tr><td>代表者</td><td>田中 祐一朗</td></tr>
-          <tr><td>資本金</td><td>500万円</td></tr>
-          <tr><td>事業内容</td><td>EC事業／自社OEM企画／就労支援連携</td></tr>
-          <tr><td>主要取引先</td><td>Amazon Japan、楽天グループ、LINEヤフー、Shopee各国、国内メーカー、就労支援施設 等</td></tr>
-          <tr><td>許可・資格</td><td><ul class="permit-list"><li>古物商許可（大分県公安委員会）</li><li>管理医療機器販売業許可（大分市）</li><li>商標登録：STANRISE®、TSUKAERU LABO®、mic.an®</li></ul></td></tr>
-          <tr><td>公告方法</td><td>電子公告 → <a href="/koukoku/" style="color:var(--accent2);font-size:12px;">公告ページへ</a></td></tr>
-        </table>
+    <div class="section-inner">
+      <p class="section-label fade-up">About Us</p>
+      <h2 class="section-title fade-up">会社概要</h2>
+      <div class="about-layout">
+        <div class="about-philosophy fade-up">
+          <p class="phil-label">Philosophy</p>
+          <p class="phil-text">価値をつくり、<br>余裕を生む。</p>
+          <div class="phil-divider"></div>
+          <p class="phil-desc">SURPLUSという社名には、便利な商品を提供することで"時間や心の余裕"を生み、日々の暮らしを豊かにしたいという想いが込められています。生活を少し楽にし、役立つ価値を届けることを目指しています。</p>
+        </div>
+        <div class="fade-up" style="--d:0.15s;">
+          <table class="company-table">
+            <tr><td>会社名</td><td>株式会社SURPLUS(SURPLUS Inc.)</td></tr>
+            <tr><td>所在地</td><td>〒870-0108<br>大分県大分市三佐3丁目1番3号<br>鶴崎司法会館 101号室</td></tr>
+            <tr><td>設立</td><td>令和8年4月</td></tr>
+            <tr><td>代表者</td><td>田中 祐一朗</td></tr>
+            <tr><td>資本金</td><td>500万円</td></tr>
+            <tr><td>事業内容</td><td>EC事業/自社OEM企画/就労支援連携</td></tr>
+            <tr><td>主要取引先</td><td>Amazon Japan、楽天グループ、LINEヤフー、Shopee各国、国内メーカー、就労支援施設 等</td></tr>
+            <tr><td>許可・資格</td><td><ul class="permit-list"><li>古物商許可(大分県公安委員会)</li><li>管理医療機器販売業許可(大分市)</li><li>商標登録:STANRISE®、TSUKAERU LABO®、mic.an®</li></ul></td></tr>
+            <tr><td>公告方法</td><td>電子公告 → <a href="/koukoku/" style="color:var(--accent2);font-size:12px;">公告ページへ</a></td></tr>
+          </table>
+        </div>
       </div>
     </div>
   </section>
 
   <section id="contact">
-    <p class="section-label fade-up">Contact</p>
-    <h2 class="section-title fade-up">お問い合わせ</h2>
-    <div class="contact-layout">
-      <div class="fade-up">
-        <p class="section-desc" style="margin-bottom:40px;">取引・OEM相談・取材など、<br>お気軽にお問い合わせください。</p>
-        <a href="mailto:info@surplus-jp.com" class="contact-mail">
-          <div class="mail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
-          <div class="mail-text"><div class="mail-label">Email</div><div class="mail-addr">info@surplus-jp.com</div></div>
-        </a>
-        <div class="contact-types">
-          <div class="contact-type">取引相談</div>
-          <div class="contact-type">OEM相談</div>
-          <div class="contact-type">取材・メディア</div>
-          <div class="contact-type">その他</div>
+    <div class="section-inner">
+      <p class="section-label fade-up">Contact</p>
+      <h2 class="section-title fade-up">お問い合わせ</h2>
+      <div class="contact-layout">
+        <div class="fade-up">
+          <p class="section-desc" style="margin-bottom:40px;">取引・OEM相談・取材など、<br>お気軽にお問い合わせください。</p>
+          <a href="mailto:info@surplus-jp.com" class="contact-mail">
+            <div class="mail-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+            <div class="mail-text"><div class="mail-label">Email</div><div class="mail-addr">info@surplus-jp.com</div></div>
+          </a>
+          <div class="contact-types">
+            <div class="contact-type">取引相談</div>
+            <div class="contact-type">OEM相談</div>
+            <div class="contact-type">取材・メディア</div>
+            <div class="contact-type">その他</div>
+          </div>
         </div>
+        <form class="contact-form fade-up" style="--d:0.15s;" action="https://formspree.io/f/mqeglenr" method="POST">
+          <div class="form-group"><label class="form-label">お名前 *</label><input type="text" name="name" class="form-input" required placeholder="田中 太郎"></div>
+          <div class="form-group"><label class="form-label">会社名・団体名</label><input type="text" name="company" class="form-input" placeholder="株式会社〇〇"></div>
+          <div class="form-group"><label class="form-label">メールアドレス *</label><input type="email" name="email" class="form-input" required placeholder="email@example.com"></div>
+          <div class="form-group">
+            <label class="form-label">お問い合わせ種別 *</label>
+            <select name="category" class="form-select" required><option value="">選択してください</option><option>取引相談</option><option>OEM相談</option><option>取材</option><option>その他</option></select>
+          </div>
+          <div class="form-group"><label class="form-label">お問い合わせ内容 *</label><textarea name="message" class="form-textarea" required placeholder="お問い合わせ内容をご記入ください"></textarea></div>
+          <input type="hidden" name="_subject" value="surplus-jp.com からのお問い合わせ">
+          <input type="hidden" name="_next" value="https://surplus-jp.com/">
+          <button type="submit" class="form-submit">送信する</button>
+        </form>
       </div>
-      <form class="contact-form fade-up" action="https://formspree.io/f/mqeglenr" method="POST">
-        <div class="form-group"><label class="form-label">お名前 *</label><input type="text" name="name" class="form-input" required placeholder="田中 太郎"></div>
-        <div class="form-group"><label class="form-label">会社名・団体名</label><input type="text" name="company" class="form-input" placeholder="株式会社〇〇"></div>
-        <div class="form-group"><label class="form-label">メールアドレス *</label><input type="email" name="email" class="form-input" required placeholder="email@example.com"></div>
-        <div class="form-group">
-          <label class="form-label">お問い合わせ種別 *</label>
-          <select name="category" class="form-select" required><option value="">選択してください</option><option>取引相談</option><option>OEM相談</option><option>取材</option><option>その他</option></select>
-        </div>
-        <div class="form-group"><label class="form-label">お問い合わせ内容 *</label><textarea name="message" class="form-textarea" required placeholder="お問い合わせ内容をご記入ください"></textarea></div>
-        <input type="hidden" name="_subject" value="surplus-jp.com からのお問い合わせ">
-        <input type="hidden" name="_next" value="https://surplus-jp.com/">
-        <button type="submit" class="form-submit">送信する</button>
-      </form>
     </div>
   </section>
 
   <footer>
-    <div>
-      <div class="footer-logo">SURPLUS Inc.</div>
-      <p class="footer-copy">© 2026 株式会社SURPLUS. All rights reserved.</p>
+    <div class="footer-inner">
+      <div>
+        <div class="footer-logo">SURPLUS Inc.</div>
+        <p class="footer-tagline">Creating Value, Making Life Better.</p>
+        <p class="footer-copy">© 2026 株式会社SURPLUS. All rights reserved.</p>
+      </div>
+      <ul class="footer-links">
+        <li><a href="#business">Business</a></li>
+        <li><a href="#brands">Brands</a></li>
+        <li><a href="#global">Global</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="/koukoku/">電子公告</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
     </div>
-    <ul class="footer-links">
-      <li><a href="#business">Business</a></li>
-      <li><a href="#brands">Brands</a></li>
-      <li><a href="#about">About</a></li>
-      <li><a href="/koukoku/">電子公告</a></li>
-      <li><a href="#contact">Contact</a></li>
-    </ul>
   </footer>
 
+  <button id="toTop" aria-label="ページ上部へ戻る">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg>
+  </button>
+
   <script>
+    // Loader
+    window.addEventListener('load', () => {
+      setTimeout(() => document.getElementById('loader').classList.add('done'), 900);
+    });
+    setTimeout(() => document.getElementById('loader').classList.add('done'), 2600); // フォールバック
+
+    // Nav scroll state
     const nav = document.getElementById('nav');
-    window.addEventListener('scroll', () => { nav.classList.toggle('scrolled', window.scrollY > 20); });
+    const toTop = document.getElementById('toTop');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 40);
+      toTop.classList.toggle('show', window.scrollY > 700);
+    }, { passive: true });
+    toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+    // Mobile menu
+    const burger = document.getElementById('burger');
+    burger.addEventListener('click', () => document.body.classList.toggle('menu-open'));
+    document.querySelectorAll('.mobile-menu a').forEach(a => a.addEventListener('click', () => document.body.classList.remove('menu-open')));
+
+    // Hero parallax
+    const heroBg = document.getElementById('heroBg');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduced) {
+      let ticking = false;
+      window.addEventListener('scroll', () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (y < window.innerHeight * 1.2) heroBg.style.translate = '0 ' + (y * 0.25) + 'px';
+          ticking = false;
+        });
+      }, { passive: true });
+    }
+
+    // Reveal on scroll
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry, i) => {
-        if (entry.isIntersecting) { setTimeout(() => entry.target.classList.add('visible'), i * 100); observer.unobserve(entry.target); }
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
       });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-up, .clip-reveal').forEach(el => observer.observe(el));
+
+    // Animated counters
+    const easeOutQuart = t => 1 - Math.pow(1 - t, 4);
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const el = entry.target;
+        counterObserver.unobserve(el);
+        const target = parseInt(el.dataset.count, 10);
+        if (reduced) { el.textContent = target; return; }
+        const dur = 1400, start = performance.now();
+        const tick = now => {
+          const p = Math.min((now - start) / dur, 1);
+          el.textContent = Math.round(easeOutQuart(p) * target);
+          if (p < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+      });
+    }, { threshold: 0.4 });
+    document.querySelectorAll('[data-count]').forEach(el => counterObserver.observe(el));
   </script>
 </body>
 </html>
